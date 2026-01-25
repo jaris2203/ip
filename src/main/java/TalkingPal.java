@@ -19,7 +19,7 @@ public class TalkingPal {
                 + lineDivider);
 
         // Get user input repeatedly until bye is said
-        ArrayList<String> taskList = new ArrayList<>();
+        ArrayList<Task> taskList = new ArrayList<>();
         String userInput = scanner.nextLine();
         while (!userInput.equalsIgnoreCase("bye")) {
 
@@ -30,8 +30,11 @@ public class TalkingPal {
                 continue;
             }
 
+            // Marking and unmarking of tasks
+
+
             // Add to task list for standard reply + Wait for next entry
-            taskList.add(userInput);
+            taskList.add(new Task(userInput));
             System.out.println(lineDivider
                     + "Added to task list: "
                     + userInput + "\n"
@@ -46,10 +49,11 @@ public class TalkingPal {
 
     }
 
-    public static void printAllTasks(ArrayList<String> taskList) {
+    public static void printAllTasks(ArrayList<Task> taskList) {
+        System.out.println("Current Tasks:\n");
         for (int i = 0; i < taskList.size(); i++) {
             if (taskList.get(i) == null) break;
-            String output = String.format("%d. %s", i + 1, taskList.get(i));
+            String output = String.format("%d. %s", i + 1, taskList.get(i).toString());
             System.out.println(output);
         }
     }
