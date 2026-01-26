@@ -54,6 +54,15 @@ public class TalkingPal {
                     }
                     break;
                 }
+                case "delete": {
+                    int taskNo = Integer.parseInt(userInput.trim().split("\\s+")[1]);
+                    try {
+                        taskList.delete(taskNo);
+                    } catch (IllegalArgumentException e) {
+                        System.out.println(e.getMessage());
+                    }
+                    break;
+                }
                 case "todo": {
                     try {
                         String[] details = Todo.parseTodo(userInput);

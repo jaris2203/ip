@@ -45,6 +45,14 @@ public class TaskList {
         return this.tasks.size();
     }
 
+    public void delete(int i) {
+        int idx = i - 1;
+        if (idx < 0 || idx >= tasks.size()) {
+            throw new IllegalArgumentException("Invalid task number: " + i);
+        }
+        this.tasks.remove(idx);
+    }
+
     @Override
     public String toString() {
         String line = String.format("Current Tasks (Total %d):\n", this.size());
