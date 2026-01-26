@@ -22,48 +22,52 @@ public class TalkingPal {
         TaskList taskList = new TaskList();
         String userInput = scanner.nextLine();
         while (!userInput.equalsIgnoreCase("bye")) {
-
-            // Print all tasks and resume getting new tasks when user replies list
-            if (userInput.equalsIgnoreCase("list")) {
-                taskList.printAllTasks();
-                userInput = scanner.nextLine();
-                continue;
-            }
-
-            // Marking and unmarking of tasks
-            String[] parts = userInput.trim().split("\\s+"); // Split by whitespace
-            if (parts.length == 2 && parts[1].matches("\\d+")) {
-
-                // Process mark/unmark command to specified task number
-                int taskNo = Integer.parseInt(parts[1]);
-                if (parts[0].equalsIgnoreCase("mark")) {
+            String mainCommand = checkCommand(userInput);
+            switch (mainCommand) {
+                case "list": {
+                    break; // We auto print at end of every operation
+                }
+                case "mark": {
+                    int taskNo = Integer.parseInt(userInput.trim().split("\\s+")[1]);
                     try {
                         taskList.markTask(taskNo);
                     } catch (IllegalArgumentException e) {
                         System.out.println(e.getMessage());
                     }
-                    taskList.printAllTasks(); // Print all tasks after update
-                    userInput = scanner.nextLine();
-                    continue;
-                } else if (parts[0].equalsIgnoreCase("unmark")) {
+                    break;
+                }
+                case "unmark": {
+                    int taskNo = Integer.parseInt(userInput.trim().split("\\s+")[1]);
                     try {
                         taskList.unmarkTask(taskNo);
                     } catch (IllegalArgumentException e) {
                         System.out.println(e.getMessage());
                     }
-                    taskList.printAllTasks();
-                    userInput = scanner.nextLine();
-                    continue;
+                    break;
                 }
-                //Default as add input to tasks
+                case "todo": {
+                    String[] details = Todo.parseTodo(userInput);
+                    String desc = details[1];
+                    taskList.add(new Todo(desc));
+                    break;
+                }
+                case "deadline": {
+                    String[] details = Deadline.parseDeadline(userInput);
+                    taskList.add(new Deadline(details[1], details[2]));
+                    break;
+                }
+                case "event": {
+                    String[] details = Event.parseEvent(userInput);
+                    taskList.add(new Event(details[1], details[2], details[3]));
+                    break;
+                }
+                default: {
+                    taskList.add(new Todo(userInput)); // Take default as normal Todo
+                }
             }
 
-            // Add to task list for standard reply + Wait for next entry
-            taskList.add(new Task(userInput));
-            System.out.println(lineDivider
-                    + "Added to task list: "
-                    + userInput + "\n"
-                    + lineDivider);
+            // Print all tasks at end of every operation
+            taskList.printAllTasks();
             userInput = scanner.nextLine();
         }
         // Greet and exit
@@ -72,8 +76,11 @@ public class TalkingPal {
 
     }
 
-    public static void checkCommand(String userInput) {
 
+    // Helper function to determine command (except bye)
+    public static String checkCommand(String userInput) {
+        String[] parts = userInput.trim().split("\\s+", 2);
+        return parts[0].toLowerCase();
     }
 
     public static void exitChat(String userName) {

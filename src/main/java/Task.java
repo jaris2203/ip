@@ -25,6 +25,6 @@ public class Task {
 
     @Override
     public String toString() {
-        return (isDone ? "[X] " : "[ ] ") + name + "\n";
+        return (isDone ? "[X] " : "[ ] ") + name;
     }
 }
