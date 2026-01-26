@@ -10,6 +10,9 @@ public class Task {
     public void markAsDone() {
         this.isDone = true;
     }
+    public void markAsUndone() {
+        this.isDone = false;
+    }
     public String getName() {
         return name;
     }
@@ -22,6 +25,6 @@ public class Task {
 
     @Override
     public String toString() {
-        return (isDone ? "[X] " : "[ ] ") + name;
+        return (isDone ? "[X] " : "[ ] ") + name + "\n";
     }
 }

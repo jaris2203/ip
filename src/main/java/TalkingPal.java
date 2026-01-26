@@ -19,19 +19,44 @@ public class TalkingPal {
                 + lineDivider);
 
         // Get user input repeatedly until bye is said
-        ArrayList<Task> taskList = new ArrayList<>();
+        TaskList taskList = new TaskList();
         String userInput = scanner.nextLine();
         while (!userInput.equalsIgnoreCase("bye")) {
 
             // Print all tasks and resume getting new tasks when user replies list
             if (userInput.equalsIgnoreCase("list")) {
-                printAllTasks(taskList);
+                taskList.printAllTasks();
                 userInput = scanner.nextLine();
                 continue;
             }
 
             // Marking and unmarking of tasks
+            String[] parts = userInput.trim().split("\\s+"); // Split by whitespace
+            if (parts.length == 2 && parts[1].matches("\\d+")) {
 
+                // Process mark/unmark command to specified task number
+                int taskNo = Integer.parseInt(parts[1]);
+                if (parts[0].equalsIgnoreCase("mark")) {
+                    try {
+                        taskList.markTask(taskNo);
+                    } catch (IllegalArgumentException e) {
+                        System.out.println(e.getMessage());
+                    }
+                    taskList.printAllTasks(); // Print all tasks after update
+                    userInput = scanner.nextLine();
+                    continue;
+                } else if (parts[0].equalsIgnoreCase("unmark")) {
+                    try {
+                        taskList.unmarkTask(taskNo);
+                    } catch (IllegalArgumentException e) {
+                        System.out.println(e.getMessage());
+                    }
+                    taskList.printAllTasks();
+                    userInput = scanner.nextLine();
+                    continue;
+                }
+                //Default as add input to tasks
+            }
 
             // Add to task list for standard reply + Wait for next entry
             taskList.add(new Task(userInput));
@@ -40,22 +65,15 @@ public class TalkingPal {
                     + userInput + "\n"
                     + lineDivider);
             userInput = scanner.nextLine();
-
         }
-
         // Greet and exit
         exitChat(userName);
         scanner.close();
 
     }
 
-    public static void printAllTasks(ArrayList<Task> taskList) {
-        System.out.println("Current Tasks:\n");
-        for (int i = 0; i < taskList.size(); i++) {
-            if (taskList.get(i) == null) break;
-            String output = String.format("%d. %s", i + 1, taskList.get(i).toString());
-            System.out.println(output);
-        }
+    public static void checkCommand(String userInput) {
+
     }
 
     public static void exitChat(String userName) {
