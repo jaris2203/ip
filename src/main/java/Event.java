@@ -8,19 +8,29 @@ public class Event extends Task {
         this.to = until;
     }
 
-    public static String[] parseEvent(String input) {
+    public static String[] parseEvent(String input) throws TalkingPalException {
         input = input.trim().replaceAll("\\s+", " ");
+        try {
+            int firstSpace = input.indexOf(' ');
+            int fromPos = input.indexOf(" /from ");
+            int toPos = input.indexOf(" /to ");
 
-        int firstSpace = input.indexOf(' ');
-        int fromPos = input.indexOf(" /from ");
-        int toPos = input.indexOf(" /to ");
+            String command = input.substring(0, firstSpace).trim();
+            String eventDesc = input.substring(firstSpace + 1, fromPos).trim();
+            if (eventDesc.isBlank()) {
+                throw new EmptyDescriptionException("event");
+            }
+            String from = input.substring(fromPos + " /from ".length(), toPos).trim();
+            String to = input.substring(toPos + " /to ".length()).trim();
+            if (from.isBlank() || to.isBlank()) {
+                throw new EmptyDateException("event");
+            }
 
-        String command = input.substring(0, firstSpace).trim();
-        String title = input.substring(firstSpace + 1, fromPos).trim();
-        String from = input.substring(fromPos + " /from ".length(), toPos).trim();
-        String to = input.substring(toPos + " /to ".length()).trim();
+            return new String[] { command, eventDesc, from, to };
+        } catch (IndexOutOfBoundsException e) {
+            throw new TalkingPalException("Gimme more details pleaseee");
+        }
 
-        return new String[] { command, title, from, to };
     }
 
 

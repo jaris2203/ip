@@ -22,7 +22,16 @@ public class TalkingPal {
         TaskList taskList = new TaskList();
         String userInput = scanner.nextLine();
         while (!userInput.equalsIgnoreCase("bye")) {
-            String mainCommand = checkCommand(userInput);
+
+            String mainCommand;
+            try {
+                mainCommand = checkCommand(userInput);
+            } catch (TalkingPalException e) {
+                System.out.println(e.getMessage());
+                taskList.printAllTasks();
+                userInput = scanner.nextLine();
+                continue;
+            }
             switch (mainCommand) {
                 case "list": {
                     break; // We auto print at end of every operation
@@ -46,23 +55,37 @@ public class TalkingPal {
                     break;
                 }
                 case "todo": {
-                    String[] details = Todo.parseTodo(userInput);
-                    String desc = details[1];
-                    taskList.add(new Todo(desc));
+                    try {
+                        String[] details = Todo.parseTodo(userInput);
+                        String desc = details[1];
+                        taskList.add(new Todo(desc));
+                    } catch (TalkingPalException e) {
+                        System.out.println(e.getMessage());
+                    }
                     break;
                 }
                 case "deadline": {
-                    String[] details = Deadline.parseDeadline(userInput);
-                    taskList.add(new Deadline(details[1], details[2]));
+                    try {
+                        String[] details = Deadline.parseDeadline(userInput);
+                        taskList.add(new Deadline(details[1], details[2]));
+                    } catch (TalkingPalException e) {
+                        System.out.println(e.getMessage());
+                    }
                     break;
                 }
                 case "event": {
-                    String[] details = Event.parseEvent(userInput);
-                    taskList.add(new Event(details[1], details[2], details[3]));
+                    try {
+                        String[] details = Event.parseEvent(userInput);
+                        taskList.add(new Event(details[1], details[2], details[3]));
+                    } catch (TalkingPalException e) {
+                        System.out.println(e.getMessage());
+                    }
                     break;
                 }
                 default: {
-                    taskList.add(new Todo(userInput)); // Take default as normal Todo
+                    System.out.println("Sorry! I am too stupid to recognise that command **HITS OWN HEAD**");
+                    userInput = scanner.nextLine();
+                    continue;
                 }
             }
 
@@ -78,8 +101,11 @@ public class TalkingPal {
 
 
     // Helper function to determine command (except bye)
-    public static String checkCommand(String userInput) {
+    public static String checkCommand(String userInput) throws TalkingPalException {
         String[] parts = userInput.trim().split("\\s+", 2);
+        if (parts.length <= 1) {
+            throw new TalkingPalException("Come on, I need a little bit more elaboration");
+        }
         return parts[0].toLowerCase();
     }
 
