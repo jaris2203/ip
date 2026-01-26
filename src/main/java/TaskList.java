@@ -37,7 +37,9 @@ public class TaskList {
     }
 
     public void printAllTasks() {
+        System.out.println(lineDivider);
         System.out.println(this.toString());
+        System.out.println(lineDivider);
     }
     public int size() {
         return this.tasks.size();
@@ -45,7 +47,6 @@ public class TaskList {
 
     @Override
     public String toString() {
-        System.out.println();
         String line = String.format("Current Tasks (Total %d):\n", this.size());
         StringBuilder output = new StringBuilder(line);
         for (int i = 0; i < tasks.size(); i++) {

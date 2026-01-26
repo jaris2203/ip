@@ -1,0 +1,8 @@
+Jaris
+LIST
+ToDo Read JJK
+DeAdLiNe 2103 TP /by 1 May
+EvEnT Aiken's Party /from 7pm /to 11pm
+MaRk 3
+UNMARK 3
+bYe

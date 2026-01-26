@@ -1,0 +1,9 @@
+Jaris
+list
+mark 1
+todo Read JJK
+deadline 2103 TP /by 1 May
+event Aiken's Party /from 7pm /to 11pm
+mark 3
+unmark 3
+bye
