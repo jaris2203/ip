@@ -5,6 +5,10 @@ public class Todo extends Task {
         super(userInput);
     }
 
+    public Todo(String userInput, boolean isDone) {
+        super(userInput, isDone);
+    }
+
     public static String[] parseTodo(String input) throws TalkingPalException {
         String[] details = input.trim().split("\\s+", 2);
         String taskDesc = details[1];

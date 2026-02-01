@@ -8,6 +8,12 @@ public class Event extends Task {
         this.to = until;
     }
 
+    public Event(String description, String from, String until, boolean isDone) {
+        super(description, isDone);
+        this.from = from;
+        this.to = until;
+    }
+
     public static String[] parseEvent(String input) throws TalkingPalException {
         input = input.trim().replaceAll("\\s+", " ");
         try {

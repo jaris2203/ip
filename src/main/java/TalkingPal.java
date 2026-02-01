@@ -1,24 +1,35 @@
 import java.util.Scanner;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.NoSuchFileException;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 
 public class TalkingPal {
 
-    public static String lineDivider  = " ____________________________________________\n";
+    public static final String LINE_DIVIDER  = " ____________________________________________\n";
+    private static final Path SAVE_PATH = Paths.get("data", "TalkingPal.txt");
 
     public static void main(String[] args) {
 
-        System.out.println(lineDivider + "Hello! I'm TalkingPal\n");
+        System.out.println(LINE_DIVIDER + "Hello! I'm TalkingPal\n");
 
         // Get user's name
         Scanner scanner = new Scanner(System.in);
-        System.out.println("What is your name?\n" + lineDivider);
+        System.out.println("What is your name?\n" + LINE_DIVIDER);
         String userName = scanner.nextLine();
-        System.out.println(lineDivider
-                + String.format("Greetings %s! What can I do for you?\n", userName)
-                + lineDivider);
 
-        // Get user input repeatedly until bye is said
-        TaskList taskList = new TaskList();
+        // Gets task list from text file, if none creates empty
+        TaskList taskList = createNewTasklist();
+        taskList.printAllTasks();
+
+        System.out.println(LINE_DIVIDER
+                + String.format("Greetings %s! What can I do for you?\n", userName)
+                + LINE_DIVIDER);
         String userInput = scanner.nextLine();
+        // Get user input repeatedly until bye is said
         while (!userInput.equalsIgnoreCase("bye")) {
             try {
                 Command mainCommand = Command.parse(getFirstWord(userInput));
@@ -94,12 +105,59 @@ public class TalkingPal {
             taskList.printAllTasks();
             userInput = scanner.nextLine();
         }
-        // Greet and exit
+        // Save tasks, greet and exit
+        try {
+            saveTasks(taskList);
+            System.out.println("Saved tasks to: " + SAVE_PATH.toAbsolutePath());
+        } catch (IOException e) {
+            System.err.println("Could not save tasks: " + e.getMessage());
+        }
         exitChat(userName);
         scanner.close();
 
     }
 
+    // Helper function to save current task list to text file
+    private static void saveTasks(TaskList taskList) throws IOException {
+        String fullText = taskList.toString();
+        int newlineIndex = fullText.indexOf('\n');
+        if (newlineIndex == -1) {
+            return;
+        }
+        String content = fullText.substring(newlineIndex + 1); //remove first line of tasks summary
+        Files.createDirectories(SAVE_PATH.getParent()); // ensure data/ exists
+        Files.writeString(SAVE_PATH, content, StandardCharsets.UTF_8);
+    }
+
+    // Helper function to read data input.txt and return populated taskList, else empty
+    private static TaskList createNewTasklist() {
+        TaskList output = new TaskList();
+        boolean isLoaded = true;
+
+        Path inputPath = Paths.get("data", "TalkingPal.txt"); // ip/data/TalkingPal.txt
+        try (BufferedReader br = Files.newBufferedReader(inputPath, StandardCharsets.UTF_8)) {
+            String line;
+            while ((line = br.readLine()) != null) {
+                // process each line
+                if (line.trim().isEmpty()) {
+                    continue;
+                }
+                output.add(TextFileParser.parseTaskLine(line));
+            }
+        } catch (NoSuchFileException e) {
+            System.err.println("File not found: " + inputPath.toAbsolutePath());
+            isLoaded = false;
+        } catch (IOException e) {
+            System.err.println("Error reading file: " + e.getMessage());
+            isLoaded = false;
+        } catch (TalkingPalException e) {
+            System.err.println("Parse error: " + e.getMessage());
+        }
+        if (isLoaded) {
+            System.out.println("Loaded data from TalkingPal.txt file!");
+        }
+        return output;
+    }
 
     // Helper function to get first word
     public static String getFirstWord(String userInput) throws TalkingPalException {
@@ -114,10 +172,10 @@ public class TalkingPal {
     }
 
     public static void exitChat(String userName) {
-        System.out.println(lineDivider
+        System.out.println(LINE_DIVIDER
                 + String.format("Bye %s! ", userName)
                 + "Hope to see you again soon!\n"
-                + lineDivider);
+                + LINE_DIVIDER);
     }
 
 }

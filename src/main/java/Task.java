@@ -7,6 +7,11 @@ public class Task {
         this.isDone = false; // Default false status
     }
 
+    public Task(String name, boolean isDone) {
+        this.name = name;
+        this.isDone = isDone; // Default false status
+    }
+
     public void markAsDone() {
         this.isDone = true;
     }

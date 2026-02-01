@@ -2,7 +2,7 @@ import java.util.ArrayList;
 
 public class TaskList {
     private ArrayList<Task> tasks;
-    public static String lineDivider  = " ____________________________________________\n";
+    public static final String LINE_DIVIDER  = " ____________________________________________\n";
 
     public TaskList() {
         this.tasks = new ArrayList<>();
@@ -26,10 +26,10 @@ public class TaskList {
 
     public void add(Task task) {
         tasks.add(task);
-        System.out.println(lineDivider
+        System.out.println(LINE_DIVIDER
                 + "Added to task list: "
                 + task
-                + lineDivider);
+                + LINE_DIVIDER);
     }
 
     public Task get(int i) {
@@ -37,9 +37,9 @@ public class TaskList {
     }
 
     public void printAllTasks() {
-        System.out.println(lineDivider);
+        System.out.println(LINE_DIVIDER);
         System.out.println(this.toString());
-        System.out.println(lineDivider);
+        System.out.println(LINE_DIVIDER);
     }
     public int size() {
         return this.tasks.size();
