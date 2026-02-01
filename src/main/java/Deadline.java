@@ -7,6 +7,11 @@ public class Deadline extends Task {
         this.by = by;
     }
 
+    public Deadline(String description, String by, boolean isDone) {
+        super(description, isDone);
+        this.by = by;
+    }
+
     // Helper function to deadline details
     public static String[] parseDeadline(String input) throws TalkingPalException {
         input = input.trim().replaceAll("\\s+", " ");
