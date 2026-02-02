@@ -1,5 +1,12 @@
 package talkingpal.util;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.NoSuchFileException;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import talkingpal.exception.TalkingPalException;
@@ -8,10 +15,58 @@ import talkingpal.task.*;
 /**
  * Parses lines in the saved tasks text format into {@code Task} objects.
  */
-public class TextFileParser {
+public class Storage {
     private static final Pattern LINE_PATTERN =
             Pattern.compile("^\\[(?<type>[TDE])\\]\\[(?<done>[ X])\\]\\s*(?<body>.+)$");
+    private static final Path SAVE_PATH = Paths.get("data", "TalkingPal.txt");
 
+    public static void saveTasks(TaskList taskList) throws IOException {
+        String fullText = taskList.toString();
+        int newlineIndex = fullText.indexOf('\n');
+        if (newlineIndex == -1) {
+            return;
+        }
+        String content = fullText.substring(newlineIndex + 1); //remove first line of tasks summary
+        Files.createDirectories(SAVE_PATH.getParent()); // ensure data/ exists
+        Files.writeString(SAVE_PATH, content, StandardCharsets.UTF_8);
+        System.out.println("Saved tasks to: " + SAVE_PATH.toAbsolutePath());
+    }
+
+    // Helper function to read data input.txt and return populated taskList, else empty
+    /**
+     * Initialises task list from input file.
+     *
+     *
+     * @return {@code TaskList} with existing tasks, or empty {@code TaskList} if no input file
+     */
+    public static TaskList createNewTasklist() {
+        TaskList output = new TaskList();
+        boolean isLoaded = true;
+
+        Path inputPath = Paths.get("data", "TalkingPal.txt"); // ip/data/TalkingPal.txt
+        try (BufferedReader br = Files.newBufferedReader(inputPath, StandardCharsets.UTF_8)) {
+            String line;
+            while ((line = br.readLine()) != null) {
+                // process each line
+                if (line.trim().isEmpty()) {
+                    continue;
+                }
+                output.add(Storage.parseTaskLine(line));
+            }
+        } catch (NoSuchFileException e) {
+            System.err.println("File not found: " + inputPath.toAbsolutePath());
+            isLoaded = false;
+        } catch (IOException e) {
+            System.err.println("Error reading file: " + e.getMessage());
+            isLoaded = false;
+        } catch (TalkingPalException e) {
+            System.err.println("Parse error: " + e.getMessage());
+        }
+        if (isLoaded) {
+            System.out.println("Loaded data from TalkingPal.txt file!");
+        }
+        return output;
+    }
     /**
      * Parses a single saved task line into a {@code Task}.
      *
