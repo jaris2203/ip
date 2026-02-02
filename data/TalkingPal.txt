@@ -1,3 +1,4 @@
-1. [T][ ] newTodo
-2. [E][X] newEvent (from: 01-01-2026 to: 5 May 2026)
-3. [D][ ] newDeadline (by: May 10 2026)
+1. [T][X] newTodo
+2. [D][ ] newDeadline (by: Dec 12 2026)
+3. [E][ ] newEvent (from: May 10 2026 to: Aug 27 2027)
+4. [T][ ] test1

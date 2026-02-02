@@ -4,37 +4,29 @@ import talkingpal.task.*;
 import talkingpal.command.Command;
 import talkingpal.exception.TalkingPalException;
 import talkingpal.util.Storage;
-
-import java.util.Scanner;
-import java.io.BufferedReader;
+import talkingpal.ui.Ui;
 import java.io.IOException;
-import java.nio.charset.StandardCharsets;
-import java.nio.file.Files;
-import java.nio.file.NoSuchFileException;
-import java.nio.file.Path;
-import java.nio.file.Paths;
+
 
 public class TalkingPal {
 
-    public static final String LINE_DIVIDER  = " ____________________________________________\n";
+    private Ui ui;
+    private TaskList taskList;
 
-    public static void main(String[] args) {
+    public TalkingPal() {
+        ui = new Ui();
+    }
 
-        System.out.println(LINE_DIVIDER + "Hello! I'm TalkingPal\n");
-
+    public void run() {
         // Get user's name
-        Scanner scanner = new Scanner(System.in);
-        System.out.println("What is your name?\n" + LINE_DIVIDER);
-        String userName = scanner.nextLine();
+        ui.askForUserName();
 
         // Gets task list from text file, if none creates empty
-        TaskList taskList = Storage.createNewTasklist();
+        this.taskList = Storage.createNewTasklist();
         taskList.printAllTasks();
 
-        System.out.println(LINE_DIVIDER
-                + String.format("Greetings %s! What can I do for you?\n", userName)
-                + LINE_DIVIDER);
-        String userInput = scanner.nextLine();
+        ui.greet();
+        String userInput = ui.getNextInput();
         // Get user input repeatedly until bye is said
         while (!userInput.equalsIgnoreCase("bye")) {
             try {
@@ -96,7 +88,7 @@ public class TalkingPal {
                     }
                     default: {
                         System.out.println("Sorry! I am too stupid to recognise that command **HITS OWN HEAD**");
-                        userInput = scanner.nextLine();
+                        userInput = ui.getNextInput();
                         continue;
                     }
                 }
@@ -105,7 +97,7 @@ public class TalkingPal {
             }
             // Print all tasks at end of every operation
             taskList.printAllTasks();
-            userInput = scanner.nextLine();
+            userInput = ui.getNextInput();
         }
         // Save tasks, greet and exit
         try {
@@ -113,16 +105,10 @@ public class TalkingPal {
         } catch (IOException e) {
             System.err.println("Could not save tasks: " + e.getMessage());
         }
-        exitChat(userName);
-        scanner.close();
+        ui.exitChat();
 
     }
-
-    public static void exitChat(String userName) {
-        System.out.println(LINE_DIVIDER
-                + String.format("Bye %s! ", userName)
-                + "Hope to see you again soon!\n"
-                + LINE_DIVIDER);
+    public static void main(String[] args) {
+        new TalkingPal().run();
     }
-
 }
