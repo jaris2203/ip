@@ -2,37 +2,48 @@ package talkingpal.command;
 
 import talkingpal.exception.TalkingPalException;
 
+/**
+ * Represents the supported user commands in TalkingPal.
+ */
 public enum Command {
-    MARK,
-    UNMARK,
-    LIST,
-    BYE,
-    TODO,
-    EVENT,
-    DEADLINE,
-    DELETE;
+    LIST("list"),
+    MARK("mark"),
+    UNMARK("unmark"),
+    DELETE("delete"),
+    TODO("todo"),
+    DEADLINE("deadline"),
+    EVENT("event"),
+    BYE("bye");
 
-    public static Command parse(String input) throws TalkingPalException {
-        String firstWord = getFirstWord(input);
-        if (firstWord.trim().isEmpty()) {
-            throw new TalkingPalException("Unfortunately, I cannot read your mind :<");
-        }
-        try {
-            return Command.valueOf(firstWord.trim().toUpperCase());
-        } catch (IllegalArgumentException e) {
-            throw new TalkingPalException("Unknown command: " + firstWord);
-        }
+    private final String keyword;
+
+    Command(String keyword) {
+        this.keyword = keyword;
     }
 
-    // Helper function to get first word
-    public static String getFirstWord(String userInput) throws TalkingPalException {
-        String[] parts = userInput.trim().split("\\s+", 2);
-        // Reject one word commands (Except list and bye)
-        if (parts.length <= 1) {
-            if (!(parts[0].equalsIgnoreCase("bye") || parts[0].equalsIgnoreCase("list"))) {
-                throw new TalkingPalException("Come on, I need a little bit more elaboration");
+    /**
+     * Parses a command word into a {@code Command}.
+     *
+     * @param commandWord The first word of the user input.
+     * @return The corresponding {@code Command}.
+     * @throws TalkingPalException If the command word is null/blank or unknown.
+     */
+    public static Command parse(String commandWord) throws TalkingPalException {
+        if (commandWord == null) {
+            throw new TalkingPalException("Command cannot be null.");
+        }
+        String trimmed = commandWord.trim();
+        if (trimmed.isEmpty()) {
+            throw new TalkingPalException("Command cannot be empty.");
+        }
+        String lowered = trimmed.toLowerCase();
+
+        for (Command command : Command.values()) {
+            if (command.keyword.equals(lowered)) {
+                return command;
             }
         }
-        return parts[0].toLowerCase();
+        throw new TalkingPalException("Unknown command: " + commandWord);
     }
+
 }

@@ -29,6 +29,10 @@ public class Ui {
         return scanner.nextLine();
     }
 
+    public void printGenericException(Exception e) {
+        System.out.println(e.getMessage());
+    }
+
     public void exitChat() {
         System.out.println(LINE_DIVIDER
                 + String.format("Bye %s! ", userName)

@@ -1,5 +1,6 @@
 package talkingpal;
 
+import talkingpal.command.CommandParser;
 import talkingpal.task.*;
 import talkingpal.command.Command;
 import talkingpal.exception.TalkingPalException;
@@ -30,35 +31,35 @@ public class TalkingPal {
         // Get user input repeatedly until bye is said
         while (!userInput.equalsIgnoreCase("bye")) {
             try {
-                Command mainCommand = Command.parse(userInput);
-                switch (mainCommand) {
+                Command cmd = CommandParser.parseCommand(userInput);
+                switch (cmd) {
                     case LIST: {
                         break; // We auto print at end of every operation
                     }
                     case MARK: {
-                        int taskNo = Integer.parseInt(userInput.trim().split("\\s+")[1]);
+                        int taskNo = CommandParser.parseTaskNumber(userInput);
                         try {
                             taskList.markTask(taskNo);
                         } catch (IllegalArgumentException e) {
-                            System.out.println(e.getMessage());
+                            ui.printGenericException(e);
                         }
                         break;
                     }
                     case UNMARK: {
-                        int taskNo = Integer.parseInt(userInput.trim().split("\\s+")[1]);
+                        int taskNo = CommandParser.parseTaskNumber(userInput);
                         try {
                             taskList.unmarkTask(taskNo);
                         } catch (IllegalArgumentException e) {
-                            System.out.println(e.getMessage());
+                            ui.printGenericException(e);
                         }
                         break;
                     }
                     case DELETE: {
-                        int taskNo = Integer.parseInt(userInput.trim().split("\\s+")[1]);
+                        int taskNo = CommandParser.parseTaskNumber(userInput);
                         try {
                             taskList.delete(taskNo);
                         } catch (IllegalArgumentException e) {
-                            System.out.println(e.getMessage());
+                            ui.printGenericException(e);
                         }
                         break;
                     }
@@ -66,7 +67,7 @@ public class TalkingPal {
                         try {
                             taskList.add(Todo.inputToTodo(userInput));
                         } catch (TalkingPalException e) {
-                            System.out.println(e.getMessage());
+                            ui.printGenericException(e);
                         }
                         break;
                     }
@@ -74,7 +75,7 @@ public class TalkingPal {
                         try {
                             taskList.add(Deadline.inputToDeadline(userInput));
                         } catch (TalkingPalException e) {
-                            System.out.println(e.getMessage());
+                            ui.printGenericException(e);
                         }
                         break;
                     }
@@ -82,7 +83,7 @@ public class TalkingPal {
                         try {
                             taskList.add(Event.inputToEvent(userInput));
                         } catch (TalkingPalException e) {
-                            System.out.println(e.getMessage());
+                            ui.printGenericException(e);
                         }
                         break;
                     }
@@ -93,7 +94,7 @@ public class TalkingPal {
                     }
                 }
             } catch (TalkingPalException e) {
-                System.out.println(e.getMessage());
+                ui.printGenericException(e);
             }
             // Print all tasks at end of every operation
             taskList.printAllTasks();
