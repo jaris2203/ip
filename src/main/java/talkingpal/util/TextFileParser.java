@@ -1,5 +1,9 @@
+package talkingpal.util;
+
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import talkingpal.exception.TalkingPalException;
+import talkingpal.task.*;
 
 /**
  * Parses lines in the saved tasks text format into {@code Task} objects.

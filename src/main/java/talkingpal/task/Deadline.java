@@ -1,3 +1,7 @@
+package talkingpal.task;
+
+import talkingpal.exception.*;
+
 public class Deadline extends Task {
 
     protected String by;

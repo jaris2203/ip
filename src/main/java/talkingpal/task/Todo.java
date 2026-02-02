@@ -1,3 +1,8 @@
+package talkingpal.task;
+
+import talkingpal.exception.EmptyDescriptionException;
+import talkingpal.exception.TalkingPalException;
+
 public class Todo extends Task {
 
     //Task without deadline

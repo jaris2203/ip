@@ -1,3 +1,10 @@
+package talkingpal;
+
+import talkingpal.task.*;
+import talkingpal.command.Command;
+import talkingpal.exception.TalkingPalException;
+import talkingpal.util.TextFileParser;
+
 import java.util.Scanner;
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -10,7 +17,7 @@ import java.nio.file.Paths;
 public class TalkingPal {
 
     public static final String LINE_DIVIDER  = " ____________________________________________\n";
-    private static final Path SAVE_PATH = Paths.get("data", "TalkingPal.txt");
+    private static final Path SAVE_PATH = Paths.get("data", "talkingpal.TalkingPal.txt");
 
     public static void main(String[] args) {
 
