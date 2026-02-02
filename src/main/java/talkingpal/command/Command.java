@@ -1,3 +1,7 @@
+package talkingpal.command;
+
+import talkingpal.exception.TalkingPalException;
+
 public enum Command {
     MARK,
     UNMARK,

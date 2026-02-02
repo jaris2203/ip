@@ -1,5 +1,5 @@
  ____________________________________________
-Hello! I'm TalkingPal
+Hello! I'm talkingpal.TalkingPal
 
 What is your name?
  ____________________________________________

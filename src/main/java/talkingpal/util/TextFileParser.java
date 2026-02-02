@@ -1,5 +1,9 @@
+package talkingpal.util;
+
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import talkingpal.exception.TalkingPalException;
+import talkingpal.task.*;
 
 /**
  * Parses lines in the saved tasks text format into {@code Task} objects.
@@ -62,7 +66,7 @@ public class TextFileParser {
             throw new TalkingPalException("Deadline description/by cannot be empty: " + body);
         }
 
-        return new Deadline(description, by, isDone);
+        return new Deadline(description, DateParser.parse(by), isDone);
     }
 
     private static Task parseEvent(String body, boolean isDone) throws TalkingPalException {
@@ -88,6 +92,10 @@ public class TextFileParser {
             throw new TalkingPalException("Event description/from/to cannot be empty: " + body);
         }
 
-        return new Event(description, from, to, isDone);
+        return new Event(
+                description,
+                DateParser.parse(from),
+                DateParser.parse(to),
+                isDone);
     }
 }
