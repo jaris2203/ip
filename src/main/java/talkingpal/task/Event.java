@@ -1,18 +1,20 @@
 package talkingpal.task;
 
 import talkingpal.exception.*;
+import java.time.LocalDate;
+import talkingpal.util.DateParser;
 
 public class Event extends Task {
-    protected String from;
-    protected String to;
+    protected LocalDate from;
+    protected LocalDate to;
 
-    public Event(String description, String from, String until) {
+    public Event(String description, LocalDate from, LocalDate until) {
         super(description);
         this.from = from;
         this.to = until;
     }
 
-    public Event(String description, String from, String until, boolean isDone) {
+    public Event(String description, LocalDate from, LocalDate until, boolean isDone) {
         super(description, isDone);
         this.from = from;
         this.to = until;
@@ -40,14 +42,25 @@ public class Event extends Task {
         } catch (IndexOutOfBoundsException e) {
             throw new TalkingPalException("Gimme more details pleaseee");
         }
+    }
 
+    public static Event inputToEvent(String input) throws TalkingPalException{
+        try {
+            String[] details = parseEvent(input);
+            return new Event(
+                    details[1],
+                    DateParser.parse(details[2]),
+                    DateParser.parse(details[3]));
+        } finally {
+
+        }
     }
 
 
     @Override
     public String toString() {
         return "[E]" + super.toString()
-                + " (from: " + from
-                + " to: " + to + ")\n";
+                + " (from: " + DateParser.formatForStorage(from)
+                + " to: " + DateParser.formatForStorage(to) + ")\n";
     }
 }

@@ -73,9 +73,7 @@ public class TalkingPal {
                     }
                     case TODO: {
                         try {
-                            String[] details = Todo.parseTodo(userInput);
-                            String desc = details[1];
-                            taskList.add(new Todo(desc));
+                            taskList.add(Todo.inputToTodo(userInput));
                         } catch (TalkingPalException e) {
                             System.out.println(e.getMessage());
                         }
@@ -83,8 +81,7 @@ public class TalkingPal {
                     }
                     case DEADLINE: {
                         try {
-                            String[] details = Deadline.parseDeadline(userInput);
-                            taskList.add(new Deadline(details[1], details[2]));
+                            taskList.add(Deadline.inputToDeadline(userInput));
                         } catch (TalkingPalException e) {
                             System.out.println(e.getMessage());
                         }
@@ -92,8 +89,7 @@ public class TalkingPal {
                     }
                     case EVENT: {
                         try {
-                            String[] details = Event.parseEvent(userInput);
-                            taskList.add(new Event(details[1], details[2], details[3]));
+                            taskList.add(Event.inputToEvent(userInput));
                         } catch (TalkingPalException e) {
                             System.out.println(e.getMessage());
                         }

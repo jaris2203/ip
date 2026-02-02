@@ -1,23 +1,25 @@
 package talkingpal.task;
 
 import talkingpal.exception.*;
+import talkingpal.util.DateParser;
+import java.time.LocalDate;
 
 public class Deadline extends Task {
 
-    protected String by;
+    protected LocalDate by;
 
-    public Deadline(String description, String by) {
+    public Deadline(String description, LocalDate by) {
         super(description);
         this.by = by;
     }
 
-    public Deadline(String description, String by, boolean isDone) {
+    public Deadline(String description, LocalDate by, boolean isDone) {
         super(description, isDone);
         this.by = by;
     }
 
     // Helper function to deadline details
-    public static String[] parseDeadline(String input) throws TalkingPalException {
+    private static String[] parseDeadline(String input) throws TalkingPalException {
         input = input.trim().replaceAll("\\s+", " ");
         try {
             int firstSpace = input.indexOf(' ');
@@ -38,8 +40,17 @@ public class Deadline extends Task {
         }
     }
 
+    public static Deadline inputToDeadline(String input) throws TalkingPalException{
+        try {
+            String[] details = parseDeadline(input);
+            return new Deadline(details[1], DateParser.parse(details[2]));
+        } finally {
+
+        }
+    }
+
     @Override
     public String toString() {
-        return "[D]" + super.toString() + " (by: " + by + ")\n";
+        return "[D]" + super.toString() + " (by: " + DateParser.formatForStorage(by) + ")\n";
     }
 }
