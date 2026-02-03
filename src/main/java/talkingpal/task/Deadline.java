@@ -4,6 +4,9 @@ import talkingpal.exception.*;
 import talkingpal.util.DateParser;
 import java.time.LocalDate;
 
+/**
+ * Represents a task with a description and a due date.
+ */
 public class Deadline extends Task {
 
     protected LocalDate by;
@@ -39,7 +42,11 @@ public class Deadline extends Task {
             throw new TalkingPalException("Gimme more details pleaseee");
         }
     }
-
+    /**
+     * Converts a string input to a {@code Deadline} task object.
+     *
+     * @return {@code Deadline} configured using user input
+     */
     public static Deadline inputToDeadline(String input) throws TalkingPalException{
         try {
             String[] details = parseDeadline(input);

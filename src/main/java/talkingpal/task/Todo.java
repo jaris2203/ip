@@ -3,6 +3,9 @@ package talkingpal.task;
 import talkingpal.exception.EmptyDescriptionException;
 import talkingpal.exception.TalkingPalException;
 
+/**
+ * Represents a to-do task with a description.
+ */
 public class Todo extends Task {
 
     //Task without deadline
@@ -24,6 +27,11 @@ public class Todo extends Task {
         return new String[]{command, taskDesc};
     }
 
+    /**
+     * Converts a string input to a {@code Todo} task object.
+     *
+     * @return {@code Todo} configured using user input
+     */
     public static Todo inputToTodo(String input) throws TalkingPalException{
         String[] details = parseTodo(input);
         String desc = details[1];

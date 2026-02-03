@@ -13,13 +13,18 @@ import talkingpal.exception.TalkingPalException;
 import talkingpal.task.*;
 
 /**
- * Parses lines in the saved tasks text format into {@code Task} objects.
+ * Handles loading and storing of task list
  */
 public class Storage {
     private static final Pattern LINE_PATTERN =
             Pattern.compile("^\\[(?<type>[TDE])\\]\\[(?<done>[ X])\\]\\s*(?<body>.+)$");
     private static final Path SAVE_PATH = Paths.get("data", "TalkingPal.txt");
 
+    /**
+     * Saves ongoing task list as a text file in designated path
+     *
+     * @throws IOException when file path not configured properly
+     */
     public static void saveTasks(TaskList taskList) throws IOException {
         String fullText = taskList.toString();
         int newlineIndex = fullText.indexOf('\n');
@@ -32,7 +37,6 @@ public class Storage {
         System.out.println("Saved tasks to: " + SAVE_PATH.toAbsolutePath());
     }
 
-    // Helper function to read data input.txt and return populated taskList, else empty
     /**
      * Initialises task list from input file.
      *
