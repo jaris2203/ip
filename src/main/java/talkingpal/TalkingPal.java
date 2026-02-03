@@ -91,6 +91,11 @@ public class TalkingPal {
                         ui.printGenericException(e);
                     }
                     break;
+                case FIND:
+                    String filteredList = taskList.find(CommandParser.getArguments(userInput));
+                    ui.print(filteredList);
+                    userInput = ui.getNextInput();
+                    continue;
                 default:
                     System.out.println("Sorry! I am too stupid to recognise that command **HITS OWN HEAD**");
                     userInput = ui.getNextInput();

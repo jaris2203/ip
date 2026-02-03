@@ -48,6 +48,10 @@ public class Ui {
         System.out.println(e.getMessage());
     }
 
+    public void print(String output) {
+        System.out.println(output);
+    }
+
     /**
      * Prints the farewell message and closes the input scanner.
      */
