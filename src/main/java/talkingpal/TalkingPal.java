@@ -8,6 +8,12 @@ import talkingpal.util.Storage;
 import talkingpal.ui.Ui;
 import java.io.IOException;
 
+/**
+ * The main entry point of the TalkingPal application.
+ * <p>
+ * Handles the program flow by coordinating the UI, command parsing, task list operations,
+ * and saving/loading of tasks.
+ */
 
 public class TalkingPal {
 

@@ -4,6 +4,9 @@ import talkingpal.exception.*;
 import java.time.LocalDate;
 import talkingpal.util.DateParser;
 
+/**
+ * Represents a task with a description and a start and end date.
+ */
 public class Event extends Task {
     protected LocalDate from;
     protected LocalDate to;
@@ -44,6 +47,11 @@ public class Event extends Task {
         }
     }
 
+    /**
+     * Converts a string input to a {@code Event} task object.
+     *
+     * @return {@code Event} configured using user input
+     */
     public static Event inputToEvent(String input) throws TalkingPalException{
         try {
             String[] details = parseEvent(input);
