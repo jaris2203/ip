@@ -32,80 +32,79 @@ public class TalkingPal {
         this.taskList = Storage.createNewTasklist();
         taskList.printAllTasks();
 
+        // Greets and gets next command
         ui.greet();
         String userInput = ui.getNextInput();
+
         // Get user input repeatedly until bye is said
         while (!userInput.equalsIgnoreCase("bye")) {
             try {
+                int taskNo;
+
+                // Determine type of action command
                 Command cmd = CommandParser.parseCommand(userInput);
                 switch (cmd) {
-                    case LIST: {
-                        break; // We auto print at end of every operation
+                case LIST:
+                    break; // We auto print at end of every operation
+                case MARK:
+                    taskNo = CommandParser.parseTaskNumber(userInput);
+                    try {
+                        taskList.markTask(taskNo);
+                    } catch (IllegalArgumentException e) {
+                        ui.printGenericException(e);
                     }
-                    case MARK: {
-                        int taskNo = CommandParser.parseTaskNumber(userInput);
-                        try {
-                            taskList.markTask(taskNo);
-                        } catch (IllegalArgumentException e) {
-                            ui.printGenericException(e);
-                        }
-                        break;
+                    break;
+                case UNMARK:
+                    taskNo = CommandParser.parseTaskNumber(userInput);
+                    try {
+                        taskList.unmarkTask(taskNo);
+                    } catch (IllegalArgumentException e) {
+                        ui.printGenericException(e);
                     }
-                    case UNMARK: {
-                        int taskNo = CommandParser.parseTaskNumber(userInput);
-                        try {
-                            taskList.unmarkTask(taskNo);
-                        } catch (IllegalArgumentException e) {
-                            ui.printGenericException(e);
-                        }
-                        break;
+                    break;
+                case DELETE:
+                    taskNo = CommandParser.parseTaskNumber(userInput);
+                    try {
+                        taskList.delete(taskNo);
+                    } catch (IllegalArgumentException e) {
+                        ui.printGenericException(e);
                     }
-                    case DELETE: {
-                        int taskNo = CommandParser.parseTaskNumber(userInput);
-                        try {
-                            taskList.delete(taskNo);
-                        } catch (IllegalArgumentException e) {
-                            ui.printGenericException(e);
-                        }
-                        break;
+                    break;
+                case TODO:
+                    try {
+                        taskList.add(Todo.inputToTodo(userInput));
+                    } catch (TalkingPalException e) {
+                        ui.printGenericException(e);
                     }
-                    case TODO: {
-                        try {
-                            taskList.add(Todo.inputToTodo(userInput));
-                        } catch (TalkingPalException e) {
-                            ui.printGenericException(e);
-                        }
-                        break;
+                    break;
+                case DEADLINE:
+                    try {
+                        taskList.add(Deadline.inputToDeadline(userInput));
+                    } catch (TalkingPalException e) {
+                        ui.printGenericException(e);
                     }
-                    case DEADLINE: {
-                        try {
-                            taskList.add(Deadline.inputToDeadline(userInput));
-                        } catch (TalkingPalException e) {
-                            ui.printGenericException(e);
-                        }
-                        break;
+                    break;
+                case EVENT:
+                    try {
+                        taskList.add(Event.inputToEvent(userInput));
+                    } catch (TalkingPalException e) {
+                        ui.printGenericException(e);
                     }
-                    case EVENT: {
-                        try {
-                            taskList.add(Event.inputToEvent(userInput));
-                        } catch (TalkingPalException e) {
-                            ui.printGenericException(e);
-                        }
-                        break;
-                    }
-                    default: {
-                        System.out.println("Sorry! I am too stupid to recognise that command **HITS OWN HEAD**");
-                        userInput = ui.getNextInput();
-                        continue;
-                    }
+                    break;
+                default:
+                    System.out.println("Sorry! I am too stupid to recognise that command **HITS OWN HEAD**");
+                    userInput = ui.getNextInput();
+                    continue;
                 }
             } catch (TalkingPalException e) {
                 ui.printGenericException(e);
             }
+
             // Print all tasks at end of every operation
             taskList.printAllTasks();
             userInput = ui.getNextInput();
         }
+
         // Save tasks, greet and exit
         try {
             Storage.saveTasks(taskList);

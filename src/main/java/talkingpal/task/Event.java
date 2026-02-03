@@ -56,9 +56,7 @@ public class Event extends Task {
         try {
             String[] details = parseEvent(input);
             return new Event(
-                    details[1],
-                    DateParser.parse(details[2]),
-                    DateParser.parse(details[3]));
+                    details[1], DateParser.parse(details[2]), DateParser.parse(details[3]));
         } finally {
 
         }
@@ -67,8 +65,7 @@ public class Event extends Task {
 
     @Override
     public String toString() {
-        return "[E]" + super.toString()
-                + " (from: " + DateParser.formatForStorage(from)
+        return "[E]" + super.toString() + " (from: " + DateParser.formatForStorage(from)
                 + " to: " + DateParser.formatForStorage(to) + ")\n";
     }
 }
