@@ -33,6 +33,10 @@ public class Ui {
         System.out.println(e.getMessage());
     }
 
+    public void print(String output) {
+        System.out.println(output);
+    }
+
     public void exitChat() {
         System.out.println(LINE_DIVIDER
                 + String.format("Bye %s! ", userName)
