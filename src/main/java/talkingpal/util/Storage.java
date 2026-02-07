@@ -25,16 +25,16 @@ public class Storage {
      *
      * @throws IOException when file path not configured properly
      */
-    public static void saveTasks(TaskList taskList) throws IOException {
+    public static String saveTasks(TaskList taskList) throws IOException {
         String fullText = taskList.toString();
         int newlineIndex = fullText.indexOf('\n');
         if (newlineIndex == -1) {
-            return;
+            return "Empty task list saved! You must be on task!";
         }
         String content = fullText.substring(newlineIndex + 1); //remove first line of tasks summary
         Files.createDirectories(SAVE_PATH.getParent()); // ensure data/ exists
         Files.writeString(SAVE_PATH, content, StandardCharsets.UTF_8);
-        System.out.println("Saved tasks to: " + SAVE_PATH.toAbsolutePath());
+        return "Saved tasks to: " + SAVE_PATH.toAbsolutePath();
     }
 
     /**
