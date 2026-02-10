@@ -28,7 +28,7 @@ public class TaskList {
 
     public void add(Task task) {
         tasks.add(task);
-        System.out.println(LINE_DIVIDER + "Added to task list: " + task + LINE_DIVIDER);
+//        System.out.println(LINE_DIVIDER + "Added to task list: " + task + LINE_DIVIDER);
     }
 
     /**
