@@ -29,10 +29,6 @@ public class TalkingPal {
         this.taskList = Storage.createNewTasklist();
     }
 
-    public void initialiseTaskList() {
-        // Gets task list from text file, if none creates empty
-        this.taskList = Storage.createNewTasklist();
-    }
 
     public String getCurrentTasks() {
         return this.taskList.toString();
