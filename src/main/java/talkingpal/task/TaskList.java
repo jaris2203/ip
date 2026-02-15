@@ -57,11 +57,6 @@ public class TaskList {
         return tasks.get(i);
     }
 
-    public void printAllTasks() {
-        System.out.println(LINE_DIVIDER);
-        System.out.println(this.toString());
-        System.out.println(LINE_DIVIDER);
-    }
     public int size() {
         return this.tasks.size();
     }
