@@ -26,12 +26,6 @@ public class Task {
     public String getName() {
         return name;
     }
-    public boolean isDone() {
-        return isDone;
-    }
-    public void editName(String newName) {
-        this.name = newName;
-    }
 
     @Override
     public String toString() {
