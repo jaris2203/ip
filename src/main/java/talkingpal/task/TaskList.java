@@ -4,8 +4,6 @@ import java.util.ArrayList;
 
 public class TaskList {
     private ArrayList<Task> tasks;
-    public static final String LINE_DIVIDER  = " ____________________________________________\n";
-
     public TaskList() {
         this.tasks = new ArrayList<>();
     }
@@ -27,9 +25,10 @@ public class TaskList {
     }
 
     public void add(Task task) {
+        assert task != null : "TaskList.add() should not receive null";
         tasks.add(task);
-//        System.out.println(LINE_DIVIDER + "Added to task list: " + task + LINE_DIVIDER);
     }
+
 
     /**
      * Finds tasks in task list that contains specific word in task description.
@@ -38,6 +37,8 @@ public class TaskList {
      * @param word Keyword to be used to find task.
      */
     public String find(String word) {
+        assert word != null : "find word must not be null";
+        word = word.toLowerCase();
         TaskList filteredList = new TaskList();
         for (Task task : tasks) {
             if (task.getName().toLowerCase().contains(word)) {
@@ -54,6 +55,7 @@ public class TaskList {
     }
 
     public Task get(int i) {
+        assert i >= 0 && i < tasks.size() : "TaskList.get uses 0-based index";
         return tasks.get(i);
     }
 
