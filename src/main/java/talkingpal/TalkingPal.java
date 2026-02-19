@@ -34,7 +34,10 @@ public class TalkingPal {
         return this.taskList.toString();
     }
 
-    private String processCommand(String userInput) {
+    /**
+     * Generates a response for the user's chat message.
+     */
+    public String getResponse(String userInput) {
         if (!isUserNamed) {
             isUserNamed = true;
             return String.format("Greetings %s! What can I do for you?\n", userInput);
@@ -122,10 +125,4 @@ public class TalkingPal {
         }
     }
 
-    /**
-     * Generates a response for the user's chat message.
-     */
-    public String getResponse(String input) {
-        return processCommand(input);
-    }
 }

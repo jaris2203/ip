@@ -5,24 +5,52 @@ import java.time.LocalDate;
 import talkingpal.util.DateParser;
 
 /**
- * Represents a task with a description and a start and end date.
+ * Represents a {@link Task} that occurs within a time range (from - to).
+ * <p>
+ * Invariant: {@code from} and {@code to} should be non-null for a valid {@code Event}.
+ * </p>
  */
 public class Event extends Task {
     protected LocalDate from;
     protected LocalDate to;
 
+    /**
+     * Creates a new {@code Event} task that is initially not done.
+     *
+     * @param description Event description (non-blank).
+     * @param from Start date (non-null).
+     * @param until End date (non-null).
+     */
     public Event(String description, LocalDate from, LocalDate until) {
         super(description);
         this.from = from;
         this.to = until;
     }
 
+    /**
+     * Creates a new {@code Event} task with an explicit done/undone status.
+     *
+     * @param description Event description (non-blank).
+     * @param from Start date (non-null).
+     * @param until End date (non-null).
+     * @param isDone Whether the task is done.
+     */
     public Event(String description, LocalDate from, LocalDate until, boolean isDone) {
         super(description, isDone);
         this.from = from;
         this.to = until;
     }
 
+    /**
+     * Parses a raw user input string into event components.
+     * <p>
+     * Expected format: {@code event <description> /from <date> /to <date>}
+     * </p>
+     *
+     * @param input Raw user input.
+     * @return Array of {command, description, fromDateString, toDateString}.
+     * @throws TalkingPalException If the description/dates are missing or input format is invalid.
+     */
     public static String[] parseEvent(String input) throws TalkingPalException {
         input = input.trim().replaceAll("\\s+", " ");
         try {
@@ -48,9 +76,11 @@ public class Event extends Task {
     }
 
     /**
-     * Converts a string input to a {@code Event} task object.
+     * Converts a user input string into an {@code Event} object.
      *
-     * @return {@code Event} configured using user input
+     * @param input Raw user input.
+     * @return An {@code Event} configured using the user input.
+     * @throws TalkingPalException If parsing fails or the dates cannot be parsed.
      */
     public static Event inputToEvent(String input) throws TalkingPalException{
         try {
@@ -61,7 +91,6 @@ public class Event extends Task {
 
         }
     }
-
 
     @Override
     public String toString() {
