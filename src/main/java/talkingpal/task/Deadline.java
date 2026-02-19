@@ -13,6 +13,7 @@ public class Deadline extends Task {
 
     public Deadline(String description, LocalDate by) {
         super(description);
+        assert by != null : "Deadline.by must not be null";
         this.by = by;
     }
 
@@ -47,17 +48,18 @@ public class Deadline extends Task {
      *
      * @return {@code Deadline} configured using user input
      */
-    public static Deadline inputToDeadline(String input) throws TalkingPalException{
-        try {
-            String[] details = parseDeadline(input);
-            return new Deadline(details[1], DateParser.parse(details[2]));
-        } finally {
-
-        }
+    public static Deadline inputToDeadline(String input) throws TalkingPalException {
+        String[] details = parseDeadline(input);
+        assert details.length == 3 : "parseDeadline must return 3 fields";
+        assert details[1] != null && !details[1].isBlank() : "Deadline description must be non-blank";
+        assert details[2] != null && !details[2].isBlank() : "Deadline date string must be non-blank";
+        return new Deadline(details[1], DateParser.parse(details[2]));
     }
+
 
     @Override
     public String toString() {
+        assert by != null : "Deadline.by must not be null when formatting";
         return "[D]" + super.toString()
                 + " (by: " + DateParser.formatForStorage(by) + ")\n";
     }
