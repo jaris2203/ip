@@ -21,7 +21,7 @@ public class Main extends Application {
             AnchorPane ap = fxmlLoader.load();
             Scene scene = new Scene(ap);
             stage.setScene(scene);
-            fxmlLoader.<MainWindow>getController().setTalkingPal(talkingPal);  // inject the Duke instance
+            fxmlLoader.<MainWindow>getController().setTalkingPal(talkingPal);  // inject the TalkingPal instance
             stage.show();
         } catch (IOException e) {
             e.printStackTrace();

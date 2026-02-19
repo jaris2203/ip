@@ -4,10 +4,20 @@ import java.util.ArrayList;
 
 public class TaskList {
     private ArrayList<Task> tasks;
+<<<<<<< branch-A-CodeQuality
+
+=======
+>>>>>>> master
     public TaskList() {
         this.tasks = new ArrayList<>();
     }
 
+    /**
+     * Marks the task as done by its 1-based task number.
+     *
+     * @param i 1-based task number.
+     * @throws IllegalArgumentException If the task number is out of range.
+     */
     public void markTask(int i) {
         int idx = i - 1;
         if (idx < 0 || idx >= tasks.size()) {
@@ -16,6 +26,12 @@ public class TaskList {
         tasks.get(idx).markAsDone();
     }
 
+    /**
+     * Marks the task as not done by its 1-based task number.
+     *
+     * @param i 1-based task number.
+     * @throws IllegalArgumentException If the task number is out of range.
+     */
     public void unmarkTask(int i) {
         int idx = i - 1;
         if (idx < 0 || idx >= tasks.size()) {
@@ -54,6 +70,12 @@ public class TaskList {
         return output.toString();
     }
 
+    /**
+     * Returns the task at the given index (0-based).
+     *
+     * @param i 0-based index into the underlying list.
+     * @return Task at the given index.
+     */
     public Task get(int i) {
         assert i >= 0 && i < tasks.size() : "TaskList.get uses 0-based index";
         return tasks.get(i);

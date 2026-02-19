@@ -11,18 +11,40 @@ public class Deadline extends Task {
 
     protected LocalDate by;
 
+    /**
+     * Creates a new {@code Deadline} task that is initially not done.
+     *
+     * @param description Task description (non-blank).
+     * @param by Due date of the task (non-null).
+     */
     public Deadline(String description, LocalDate by) {
         super(description);
         assert by != null : "Deadline.by must not be null";
         this.by = by;
     }
 
+    /**
+     * Creates a new {@code Deadline} task with an explicit done/undone status.
+     *
+     * @param description Task description (non-blank).
+     * @param by Due date of the task (non-null).
+     * @param isDone Whether the task is done.
+     */
     public Deadline(String description, LocalDate by, boolean isDone) {
         super(description, isDone);
         this.by = by;
     }
 
-    // Helper function to deadline details
+    /**
+     * Parses a raw user input string into deadline components.
+     * <p>
+     * Expected format: {@code deadline <description> /by <date>}
+     * </p>
+     *
+     * @param input Raw user input.
+     * @return Array of {command, description, byDateString}.
+     * @throws TalkingPalException If the description/date is missing or input format is invalid.
+     */
     private static String[] parseDeadline(String input) throws TalkingPalException {
         input = input.trim().replaceAll("\\s+", " ");
         try {
@@ -43,10 +65,13 @@ public class Deadline extends Task {
             throw new TalkingPalException("Gimme more details pleaseee");
         }
     }
+
     /**
-     * Converts a string input to a {@code Deadline} task object.
+     * Converts a raw user input string into a {@code Deadline} object.
      *
-     * @return {@code Deadline} configured using user input
+     * @param input Raw user input.
+     * @return A {@code Deadline} configured using the user input.
+     * @throws TalkingPalException If parsing fails or the date cannot be parsed.
      */
     public static Deadline inputToDeadline(String input) throws TalkingPalException {
         String[] details = parseDeadline(input);

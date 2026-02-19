@@ -36,13 +36,13 @@ public class MainWindow extends AnchorPane {
         );
     }
 
-    /** Injects the Duke instance */
+    /** Injects the TalkingPal instance */
     public void setTalkingPal(TalkingPal p) {
         talkingPal = p;
     }
 
     /**
-     * Creates two dialog boxes, one echoing user input and the other containing Duke's reply and then appends them to
+     * Creates two dialog boxes, one echoing user input and the other containing TalkingPal's reply and then appends them to
      * the dialog container. Clears the user input after processing.
      */
     @FXML
