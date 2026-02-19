@@ -39,6 +39,7 @@ public class Todo extends Task {
      */
     private static String[] parseTodo(String input) throws TalkingPalException {
         String[] details = input.trim().split("\\s+", 2);
+        assert details.length == 2 : "split(...,2) should yield 2 parts when description exists";
         String taskDesc = details[1];
         if (taskDesc.isBlank()) {
             throw new EmptyDescriptionException("todo");

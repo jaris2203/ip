@@ -4,11 +4,11 @@ import talkingpal.command.CommandParser;
 import talkingpal.task.TaskList;
 import talkingpal.task.Todo;
 import talkingpal.task.Event;
-import talkingpal.task.Deadline;
 import talkingpal.command.Command;
 import talkingpal.exception.TalkingPalException;
 import talkingpal.util.Storage;
 import java.io.IOException;
+import talkingpal.task.Deadline;
 
 /**
  * The main entry point of the TalkingPal application.
