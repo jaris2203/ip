@@ -4,10 +4,7 @@ import java.util.ArrayList;
 
 public class TaskList {
     private ArrayList<Task> tasks;
-<<<<<<< branch-A-CodeQuality
 
-=======
->>>>>>> master
     public TaskList() {
         this.tasks = new ArrayList<>();
     }
