@@ -4,9 +4,11 @@ import java.util.ArrayList;
 
 public class TaskList {
     private ArrayList<Task> tasks;
+    private ArrayList<Task> oldTasks; // For undo command
 
     public TaskList() {
         this.tasks = new ArrayList<>();
+        this.oldTasks = new ArrayList<>();
     }
 
     /**
@@ -16,6 +18,7 @@ public class TaskList {
      * @throws IllegalArgumentException If the task number is out of range.
      */
     public void markTask(int i) {
+        this.oldTasks = tasks;
         int idx = i - 1;
         if (idx < 0 || idx >= tasks.size()) {
             throw new IllegalArgumentException("Invalid task number: " + i);
@@ -30,6 +33,7 @@ public class TaskList {
      * @throws IllegalArgumentException If the task number is out of range.
      */
     public void unmarkTask(int i) {
+        this.oldTasks = tasks;
         int idx = i - 1;
         if (idx < 0 || idx >= tasks.size()) {
             throw new IllegalArgumentException("Invalid task number: " + i);
@@ -38,6 +42,7 @@ public class TaskList {
     }
 
     public void add(Task task) {
+        this.oldTasks = tasks;
         assert task != null : "TaskList.add() should not receive null";
         tasks.add(task);
     }
@@ -83,11 +88,18 @@ public class TaskList {
     }
 
     public void delete(int i) {
+        this.oldTasks = tasks;
         int idx = i - 1;
         if (idx < 0 || idx >= tasks.size()) {
             throw new IllegalArgumentException("Invalid task number: " + i);
         }
         this.tasks.remove(idx);
+    }
+
+    public void undo() {
+        ArrayList<Task> temp = this.tasks;
+        this.tasks = oldTasks;
+        this.oldTasks = temp; // If we undo after an undo, it should revert to original
     }
 
     @Override

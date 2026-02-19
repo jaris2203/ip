@@ -120,6 +120,9 @@ public class TalkingPal {
                     break;
                 case FIND:
                     return taskList.find(CommandParser.getArguments(userInput));
+                case UNDO:
+                    taskList.undo();
+                    out.append("Undo-ed previous command!\n");
                 default:
                     return "Sorry! I am too stupid to recognise that command **HITS OWN HEAD**";
 
