@@ -8,8 +8,7 @@ import talkingpal.command.Command;
 import talkingpal.exception.TalkingPalException;
 import talkingpal.util.Storage;
 import java.io.IOException;
-
-import static talkingpal.task.Deadline.inputToDeadline;
+import talkingpal.task.Deadline;
 
 /**
  * The main entry point of the TalkingPal application.
@@ -84,7 +83,7 @@ public class TalkingPal {
                         break;
                     case DEADLINE:
                         try {
-                            taskList.add(inputToDeadline(userInput));
+                            taskList.add(Deadline.inputToDeadline(userInput));
                             out.append("Added new task!\n");
                         } catch (TalkingPalException e) {
                             out.append(e.getMessage());
