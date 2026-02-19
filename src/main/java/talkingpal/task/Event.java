@@ -13,6 +13,8 @@ public class Event extends Task {
 
     public Event(String description, LocalDate from, LocalDate until) {
         super(description);
+        assert from != null && until != null : "Event dates must not be null";
+        assert !until.isBefore(from) : "Event end date must be on/after start date";
         this.from = from;
         this.to = until;
     }
@@ -53,19 +55,17 @@ public class Event extends Task {
      * @return {@code Event} configured using user input
      */
     public static Event inputToEvent(String input) throws TalkingPalException{
-        try {
-            String[] details = parseEvent(input);
-            return new Event(
-                    details[1], DateParser.parse(details[2]), DateParser.parse(details[3]));
-        } finally {
-
-        }
+        String[] details = parseEvent(input);
+        assert details.length == 4 : "parseEvent must return 4 fields";
+        return new Event(
+                details[1], DateParser.parse(details[2]), DateParser.parse(details[3]));
     }
-
 
     @Override
     public String toString() {
+        assert from != null && to != null : "Event dates must not be null when formatting";
         return "[E]" + super.toString() + " (from: " + DateParser.formatForStorage(from)
                 + " to: " + DateParser.formatForStorage(to) + ")\n";
     }
+
 }
