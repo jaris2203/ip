@@ -45,71 +45,8 @@ public class TalkingPal {
         // Determine instruction
         StringBuilder out = new StringBuilder();
         if (!userInput.equalsIgnoreCase("bye")) {
-            try {
-                int taskNo;
-                // Determine type of action command
-                Command cmd = CommandParser.parseCommand(userInput);
-                switch (cmd) {
-                    case LIST:
-                        break; // We auto print at end of every operation
-                    case MARK:
-                        taskNo = CommandParser.parseTaskNumber(userInput);
-                        try {
-                            taskList.markTask(taskNo);
-                        } catch (IllegalArgumentException e) {
-                            out.append(e.getMessage());
-                        }
-                        break;
-                    case UNMARK:
-                        taskNo = CommandParser.parseTaskNumber(userInput);
-                        try {
-                            taskList.unmarkTask(taskNo);
-                        } catch (IllegalArgumentException e) {
-                            out.append(e.getMessage());
-                        }
-                        break;
-                    case DELETE:
-                        taskNo = CommandParser.parseTaskNumber(userInput);
-                        try {
-                            taskList.delete(taskNo);
-                        } catch (IllegalArgumentException e) {
-                            out.append(e.getMessage());
-                        }
-                        break;
-                    case TODO:
-                        try {
-                            taskList.add(Todo.inputToTodo(userInput));
-                            out.append("Added new task!\n");
-                        } catch (TalkingPalException e) {
-                            out.append(e.getMessage());
-                        }
-                        break;
-                    case DEADLINE:
-                        try {
-                            taskList.add(Deadline.inputToDeadline(userInput));
-                            out.append("Added new task!\n");
-                        } catch (TalkingPalException e) {
-                            out.append(e.getMessage());
-                        }
-                        break;
-                    case EVENT:
-                        try {
-                            taskList.add(Event.inputToEvent(userInput));
-                            out.append("Added new task!\n");
-                        } catch (TalkingPalException e) {
-                            out.append(e.getMessage());
-                        }
-                        break;
-                    case FIND:
-                        return taskList.find(CommandParser.getArguments(userInput));
-                    default:
-                        return "Sorry! I am too stupid to recognise that command **HITS OWN HEAD**";
-
-                }
-            } catch (TalkingPalException e) {
-                out.append(e.getMessage());
-            }
-
+            String newResponse = processCommand(userInput);
+            out.append(newResponse);
             // Always return updated task list
             return out.append(this.getCurrentTasks()).toString();
 
@@ -123,6 +60,74 @@ public class TalkingPal {
             out.append(String.format("\nGoodbye %s!", userName));
             return out.toString();
         }
+    }
+
+    private String processCommand(String userInput) {
+        StringBuilder out = new StringBuilder();
+        int taskNo;
+        try {
+            Command cmd = CommandParser.parseCommand(userInput);
+            switch (cmd) {
+                case LIST:
+                    break; // We auto print at end of every operation
+                case MARK:
+                    taskNo = CommandParser.parseTaskNumber(userInput);
+                    try {
+                        taskList.markTask(taskNo);
+                    } catch (IllegalArgumentException e) {
+                        out.append(e.getMessage());
+                    }
+                    break;
+                case UNMARK:
+                    taskNo = CommandParser.parseTaskNumber(userInput);
+                    try {
+                        taskList.unmarkTask(taskNo);
+                    } catch (IllegalArgumentException e) {
+                        out.append(e.getMessage());
+                    }
+                    break;
+                case DELETE:
+                    taskNo = CommandParser.parseTaskNumber(userInput);
+                    try {
+                        taskList.delete(taskNo);
+                    } catch (IllegalArgumentException e) {
+                        out.append(e.getMessage());
+                    }
+                    break;
+                case TODO:
+                    try {
+                        taskList.add(Todo.inputToTodo(userInput));
+                        out.append("Added new task!\n");
+                    } catch (TalkingPalException e) {
+                        out.append(e.getMessage());
+                    }
+                    break;
+                case DEADLINE:
+                    try {
+                        taskList.add(Deadline.inputToDeadline(userInput));
+                        out.append("Added new task!\n");
+                    } catch (TalkingPalException e) {
+                        out.append(e.getMessage());
+                    }
+                    break;
+                case EVENT:
+                    try {
+                        taskList.add(Event.inputToEvent(userInput));
+                        out.append("Added new task!\n");
+                    } catch (TalkingPalException e) {
+                        out.append(e.getMessage());
+                    }
+                    break;
+                case FIND:
+                    return taskList.find(CommandParser.getArguments(userInput));
+                default:
+                    return "Sorry! I am too stupid to recognise that command **HITS OWN HEAD**";
+
+            }
+        } catch (TalkingPalException e) {
+            out.append(e.getMessage());
+        }
+        return out.toString();
     }
 
 }
