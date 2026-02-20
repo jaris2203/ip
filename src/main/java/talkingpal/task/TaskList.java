@@ -4,10 +4,25 @@ import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.Deque;
 
+/**
+ * Represents a mutable list of {@link Task} objects.
+ * <p>
+ * This class supports common task list operations such as add, delete, mark and unmark.
+ * It also provides an undo mechanism by storing deep-copied snapshots of the task list
+ * before each mutating operation.
+ * </p>
+ * <p>
+ * Undo is implemented using a stack of previous task list states. Each snapshot is a deep copy
+ * of the current list (via {@link Task#copy()}) so that later mutations do not affect earlier states.
+ * </p>
+ */
 public class TaskList {
     private ArrayList<Task> tasks;
     private final Deque<ArrayList<Task>> undoStack;
 
+    /**
+     * Constructs an empty {@code TaskList} with an empty undo history.
+     */
     public TaskList() {
         this.tasks = new ArrayList<>();
         this.undoStack = new ArrayDeque<>();
@@ -100,6 +115,11 @@ public class TaskList {
 
     // Used ChatGPT to help debug and improve Undo method. The improved version now uses a stack of
     // all previous task list states that allows us to undo multiple commands instead of only the most recent.
+    /**
+     * Reverts the task list to the most recent snapshot taken before the last mutating command.
+     *
+     * @throws IllegalStateException if there is no earlier state to revert to.
+     */
     public void undo() {
         if (undoStack.isEmpty()) {
             throw new IllegalStateException("Nothing to undo.");
@@ -107,6 +127,13 @@ public class TaskList {
         tasks = undoStack.pop();
     }
 
+    /**
+     * Saves a deep-copied snapshot of the current task list onto the undo stack.
+     * <p>
+     * Each {@link Task} is copied via {@link Task#copy()} to prevent later mutations
+     * from affecting previously saved states.
+     * </p>
+     */
     private void snapshot() {
         ArrayList<Task> snap = new ArrayList<>(tasks.size());
         for (Task t : tasks) {
