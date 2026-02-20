@@ -45,12 +45,10 @@ Talk to TalkingPal by typing commands into the console.
 
 ### Common commands (examples)
 
-> Note: The exact command formats may differ depending on your current parser/command classes.
-
 - Add a task
    - `todo read book`
    - `deadline return book /by 2026-02-21`
-   - `event meetup /at 2026-03-01`
+   - `event community service /from 2026-03-01 /to 2026-03-03`
 - List tasks
    - `list`
 - Mark / unmark a task (1-based indexing)
@@ -72,8 +70,6 @@ TalkingPal supports **multi-level undo**.
 - Before any mutating command (e.g., add/delete/mark/unmark), the task list takes a **deep-copy snapshot**
 - These snapshots are stored in a stack
 - `undo` reverts the task list to the most recent snapshot
-
-This prevents the common Java pitfall where “old state” accidentally points to the same object as the current list.
 
 ---
 
