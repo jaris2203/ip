@@ -1,26 +1,87 @@
-# talkingpal.TalkingPal project template
+# TalkingPal
 
-This is a project template for a greenfield Java project. It's named after the Java mascot _Duke_. Given below are instructions on how to use it.
+TalkingPal is a simple **CLI-based task manager** written in **Java 17**.  
+It helps you track tasks (e.g., todos / deadlines / events), mark them as done, delete them, search for tasks, and **undo** recent changes.
 
-## Setting up in Intellij
+---
 
-Prerequisites: JDK 17, update Intellij to the most recent version.
+## Features
 
-1. Open Intellij (if you are not in the welcome screen, click `File` > `Close Project` to close the existing project first)
-1. Open the project into Intellij as follows:
-   1. Click `Open`.
-   1. Select the project directory, and click `OK`.
-   1. If there are any further prompts, accept the defaults.
-1. Configure the project to use **JDK 17** (not other versions) as explained in [here](https://www.jetbrains.com/help/idea/sdk.html#set-up-jdk).<br>
-   In the same dialog, set the **Project language level** field to the `SDK default` option.
-1. After that, locate the `src/main/java/talkingpal.TalkingPal.java` file, right-click it, and choose `Run talkingpal.TalkingPal.main()` (if the code editor is showing compile errors, try restarting the IDE). If the setup is correct, you should see something like the below as the output:
-   ```
-   Hello from
-    ____        _        
-   |  _ \ _   _| | _____ 
-   | | | | | | | |/ / _ \
-   | |_| | |_| |   <  __/
-   |____/ \__,_|_|\_\___|
-   ```
+- Add tasks to your list
+- Mark / unmark tasks as done
+- Delete tasks
+- Find tasks by keyword (case-insensitive)
+- **Undo** previous actions (supports multiple undos)
 
-**Warning:** Keep the `src\main\java` folder as the root folder for Java files (i.e., don't rename those folders or move Java files to another folder outside of this folder path), as this is the default location some tools (e.g., Gradle) expect to find Java files.
+---
+
+## Setting up in IntelliJ IDEA
+
+**Prerequisites:** JDK 17, IntelliJ IDEA (latest version recommended)
+
+1. Open IntelliJ IDEA  
+   (If you’re not on the welcome screen, click `File` > `Close Project` first.)
+2. Open the project:
+   1. Click `Open`
+   2. Select the project directory
+   3. Click `OK`
+   4. Accept default prompts if any appear
+3. Configure the project to use **JDK 17**:
+   - Follow JetBrains guide: https://www.jetbrains.com/help/idea/sdk.html#set-up-jdk
+   - Set **Project language level** to `SDK default`
+4. Run the app:
+   - Locate `src/main/java/talkingpal/Launcher.java`
+   - Right-click > `Run talkingpal.Launcher.main()`
+
+If setup is correct, you should see the program start in the Run console.
+
+> **Warning:** Keep `src/main/java` as the root folder for Java source files. Tools like Gradle expect this structure.
+
+---
+
+## Usage
+
+Talk to TalkingPal by typing commands into the console.
+
+### Common commands (examples)
+
+> Note: The exact command formats may differ depending on your current parser/command classes.
+
+- Add a task
+   - `todo read book`
+   - `deadline return book /by 2026-02-21`
+   - `event meetup /at 2026-03-01`
+- List tasks
+   - `list`
+- Mark / unmark a task (1-based indexing)
+   - `mark 1`
+   - `unmark 1`
+- Delete a task
+   - `delete 2`
+- Find tasks by keyword
+   - `find book`
+- Undo the most recent change
+   - `undo`
+
+---
+
+## Undo behavior
+
+TalkingPal supports **multi-level undo**.
+
+- Before any mutating command (e.g., add/delete/mark/unmark), the task list takes a **deep-copy snapshot**
+- These snapshots are stored in a stack
+- `undo` reverts the task list to the most recent snapshot
+
+This prevents the common Java pitfall where “old state” accidentally points to the same object as the current list.
+
+---
+
+## Project Structure (high-level)
+
+- `talkingpal.task`
+   - `Task` and task subclasses (e.g., Todo/Deadline/Event)
+   - `TaskList` (stores tasks + undo stack)
+- `talkingpal.*`
+   - Parser / Commands / Exceptions 
+
