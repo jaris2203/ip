@@ -81,6 +81,10 @@ public class Deadline extends Task {
         return new Deadline(details[1], DateParser.parse(details[2]));
     }
 
+    @Override
+    public Task copy() {
+        return new Deadline(this.name, this.by, this.isDone);
+    }
 
     @Override
     public String toString() {

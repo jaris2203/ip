@@ -123,8 +123,9 @@ public class TalkingPal {
                 case UNDO:
                     taskList.undo();
                     out.append("Undo-ed previous command!\n");
+                    break;
                 default:
-                    return "Sorry! I am too stupid to recognise that command **HITS OWN HEAD**";
+                    return "Sorry! I am too stupid to recognise that command **HITS OWN HEAD**\n";
 
             }
         } catch (TalkingPalException e) {

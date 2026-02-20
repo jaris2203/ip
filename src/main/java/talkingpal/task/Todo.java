@@ -65,6 +65,11 @@ public class Todo extends Task {
     }
 
     @Override
+    public Task copy() {
+        return new Todo(this.name, this.isDone);
+    }
+
+    @Override
     public String toString() {
         return "[T]" + super.toString() + "\n";
     }

@@ -92,6 +92,11 @@ public class Event extends Task {
     }
 
     @Override
+    public Task copy() {
+        return new Event(this.name, this.from, this.to, this.isDone);
+    }
+
+    @Override
     public String toString() {
         assert from != null && to != null : "Event dates must not be null when formatting";
         return "[E]" + super.toString() + " (from: " + DateParser.formatForStorage(from)

@@ -1,14 +1,16 @@
 package talkingpal.task;
 
+import java.util.ArrayDeque;
 import java.util.ArrayList;
+import java.util.Deque;
 
 public class TaskList {
     private ArrayList<Task> tasks;
-    private ArrayList<Task> oldTasks; // For undo command
+    private final Deque<ArrayList<Task>> undoStack;
 
     public TaskList() {
         this.tasks = new ArrayList<>();
-        this.oldTasks = new ArrayList<>();
+        this.undoStack = new ArrayDeque<>();
     }
 
     /**
@@ -18,7 +20,7 @@ public class TaskList {
      * @throws IllegalArgumentException If the task number is out of range.
      */
     public void markTask(int i) {
-        this.oldTasks = tasks;
+        snapshot();
         int idx = i - 1;
         if (idx < 0 || idx >= tasks.size()) {
             throw new IllegalArgumentException("Invalid task number: " + i);
@@ -33,7 +35,7 @@ public class TaskList {
      * @throws IllegalArgumentException If the task number is out of range.
      */
     public void unmarkTask(int i) {
-        this.oldTasks = tasks;
+        snapshot();
         int idx = i - 1;
         if (idx < 0 || idx >= tasks.size()) {
             throw new IllegalArgumentException("Invalid task number: " + i);
@@ -42,8 +44,8 @@ public class TaskList {
     }
 
     public void add(Task task) {
-        this.oldTasks = tasks;
         assert task != null : "TaskList.add() should not receive null";
+        snapshot();
         tasks.add(task);
     }
 
@@ -60,7 +62,7 @@ public class TaskList {
         TaskList filteredList = new TaskList();
         for (Task task : tasks) {
             if (task.getName().toLowerCase().contains(word)) {
-                filteredList.add(task);
+                filteredList.addWithoutUndo(task);
             }
         }
         String line = String.format("Total %d matching tasks found:\n", filteredList.size());
@@ -88,7 +90,7 @@ public class TaskList {
     }
 
     public void delete(int i) {
-        this.oldTasks = tasks;
+        snapshot();
         int idx = i - 1;
         if (idx < 0 || idx >= tasks.size()) {
             throw new IllegalArgumentException("Invalid task number: " + i);
@@ -96,10 +98,25 @@ public class TaskList {
         this.tasks.remove(idx);
     }
 
+    // Used ChatGPT to help debug and improve Undo method. The improved version now uses a stack of
+    // all previous task list states that allows us to undo multiple commands instead of only the most recent.
     public void undo() {
-        ArrayList<Task> temp = this.tasks;
-        this.tasks = oldTasks;
-        this.oldTasks = temp; // If we undo after an undo, it should revert to original
+        if (undoStack.isEmpty()) {
+            throw new IllegalStateException("Nothing to undo.");
+        }
+        tasks = undoStack.pop();
+    }
+
+    private void snapshot() {
+        ArrayList<Task> snap = new ArrayList<>(tasks.size());
+        for (Task t : tasks) {
+            snap.add(t.copy()); // requires Task.copy() implemented in subclasses
+        }
+        undoStack.push(snap);
+    }
+
+    private void addWithoutUndo(Task task) {
+        tasks.add(task);
     }
 
     @Override
