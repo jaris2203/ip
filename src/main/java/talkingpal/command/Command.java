@@ -32,11 +32,11 @@ public enum Command {
      */
     public static Command parse(String commandWord) throws TalkingPalException {
         if (commandWord == null) {
-            throw new TalkingPalException("Command cannot be null.");
+            throw new TalkingPalException("Command cannot be null.\n");
         }
         String trimmed = commandWord.trim();
         if (trimmed.isEmpty()) {
-            throw new TalkingPalException("Command cannot be empty.");
+            throw new TalkingPalException("Command cannot be empty.\n");
         }
         String lowered = trimmed.toLowerCase();
 
@@ -45,7 +45,7 @@ public enum Command {
                 return command;
             }
         }
-        throw new TalkingPalException("Unknown command: " + commandWord);
+        throw new TalkingPalException("Unknown command: " + commandWord + "\n");
     }
 
 }

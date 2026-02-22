@@ -40,12 +40,12 @@ public class DateParser {
      */
     public static LocalDate parse(String rawDate) throws TalkingPalException {
         if (rawDate == null) {
-            throw new TalkingPalException("Date cannot be null.");
+            throw new TalkingPalException("Date cannot be null.\n");
         }
 
         String date = rawDate.trim();
         if (date.isEmpty()) {
-            throw new TalkingPalException("Date cannot be empty.");
+            throw new TalkingPalException("Date cannot be empty.\n");
         }
 
         for (DateTimeFormatter formatter : ACCEPTED_INPUT_FORMATS) {
@@ -56,7 +56,7 @@ public class DateParser {
             }
         }
 
-        throw new TalkingPalException("Invalid date: " + rawDate + ". Use format like 'Feb 02 2026'.");
+        throw new TalkingPalException("Invalid date: " + rawDate + ". Use format like 'Feb 02 2026'.\n");
     }
 
     /**

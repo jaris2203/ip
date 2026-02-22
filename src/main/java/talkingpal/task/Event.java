@@ -73,7 +73,7 @@ public class Event extends Task {
 
             return new String[] { command, eventDesc, from, to };
         } catch (IndexOutOfBoundsException e) {
-            throw new TalkingPalException("Gimme more details pleaseee");
+            throw new TalkingPalException("Command me regarding events properly. I am rather unintelligent.\n");
         }
     }
 

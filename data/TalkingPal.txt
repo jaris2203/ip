@@ -1,5 +1,4 @@
-1. [T][X] newTodo
-2. [D][ ] newDeadline (by: Dec 12 2026)
-3. [E][ ] newEvent (from: May 10 2026 to: Aug 27 2027)
-4. [T][ ] new2
-5. [T][ ] new 3
+1. [E][ ] Charity Drive (from: Jun 06 2026 to: Jul 07 2026)
+2. [T][ ] Clear Trash
+3. [D][ ] Finish CS Project (by: Dec 31 2026)
+4. [T][X] Feed Yier

@@ -62,7 +62,7 @@ public class Deadline extends Task {
             }
             return new String[]{command, taskDesc, by};
         } catch (IndexOutOfBoundsException e) {
-            throw new TalkingPalException("Gimme more details pleaseee");
+            throw new TalkingPalException("Command me regarding deadlines properly. I am rather unintelligent.\n");
         }
     }
 
