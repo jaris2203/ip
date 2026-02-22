@@ -55,26 +55,34 @@ public class Event extends Task {
      */
     public static String[] parseEvent(String input) throws TalkingPalException {
         input = input.trim().replaceAll("\\s+", " ");
-        try {
-            int firstSpace = input.indexOf(' ');
-            int fromPos = input.indexOf(" /from ");
-            int toPos = input.indexOf(" /to ");
 
-            String command = input.substring(0, firstSpace).trim();
-            String eventDesc = input.substring(firstSpace + 1, fromPos).trim();
-            if (eventDesc.isBlank()) {
-                throw new EmptyDescriptionException("event");
-            }
-            String from = input.substring(fromPos + " /from ".length(), toPos).trim();
-            String to = input.substring(toPos + " /to ".length()).trim();
-            if (from.isBlank() || to.isBlank()) {
-                throw new EmptyDateException("event");
-            }
-
-            return new String[] { command, eventDesc, from, to };
-        } catch (IndexOutOfBoundsException e) {
+        int firstSpace = input.indexOf(' ');
+        if (firstSpace == -1) {
             throw new TalkingPalException("Command me regarding events properly. I am rather unintelligent.\n");
         }
+
+        String command = input.substring(0, firstSpace).trim();
+        String rest = input.substring(firstSpace + 1).trim();
+
+        java.util.regex.Pattern p = java.util.regex.Pattern.compile("^(.*?)\\s*/from\\s*(.*?)\\s*/to\\s*(.*)$");
+        java.util.regex.Matcher m = p.matcher(rest);
+
+        if (!m.matches()) {
+            throw new TalkingPalException("Command me regarding events properly. I am rather unintelligent.\n");
+        }
+
+        String eventDesc = m.group(1).trim();
+        String from = m.group(2).trim();
+        String to = m.group(3).trim();
+
+        if (eventDesc.isBlank()) {
+            throw new EmptyDescriptionException("event");
+        }
+        if (from.isBlank() || to.isBlank()) {
+            throw new EmptyDateException("event");
+        }
+
+        return new String[] { command, eventDesc, from, to };
     }
 
     /**

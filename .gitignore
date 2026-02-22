@@ -15,4 +15,4 @@ bin/
 
 **/ACTUAL.TXT
 **/EXPECTED-UNIX.TXT
-**/Ui.java
+Ui.java
