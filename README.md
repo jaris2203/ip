@@ -33,44 +33,6 @@ It helps you track tasks (e.g., todos / deadlines / events), mark them as done, 
    - Locate `src/main/java/talkingpal/Launcher.java`
    - Right-click > `Run talkingpal.Launcher.main()`
 
-If setup is correct, you should see the program start in the Run console.
-
-> **Warning:** Keep `src/main/java` as the root folder for Java source files. Tools like Gradle expect this structure.
-
----
-
-## Usage
-
-Talk to TalkingPal by typing commands into the console.
-
-### Common commands (examples)
-
-- Add a task
-   - `todo read book`
-   - `deadline return book /by 2026-02-21`
-   - `event community service /from 2026-03-01 /to 2026-03-03`
-- List tasks
-   - `list`
-- Mark / unmark a task (1-based indexing)
-   - `mark 1`
-   - `unmark 1`
-- Delete a task
-   - `delete 2`
-- Find tasks by keyword
-   - `find book`
-- Undo the most recent change
-   - `undo`
-
----
-
-## Undo behavior
-
-TalkingPal supports **multi-level undo**.
-
-- Before any mutating command (e.g., add/delete/mark/unmark), the task list takes a **deep-copy snapshot**
-- These snapshots are stored in a stack
-- `undo` reverts the task list to the most recent snapshot
-
 ---
 
 ## Project Structure (high-level)
@@ -79,5 +41,5 @@ TalkingPal supports **multi-level undo**.
    - `Task` and task subclasses (e.g., Todo/Deadline/Event)
    - `TaskList` (stores tasks + undo stack)
 - `talkingpal.*`
-   - Parser / Commands / Exceptions 
+   - Parser / Commands / Exceptions / Ui
 
