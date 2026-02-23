@@ -45,32 +45,39 @@ public class Storage {
      */
     public static TaskList createNewTasklist() {
         TaskList output = new TaskList();
-        boolean isLoaded = true;
 
-        Path inputPath = Paths.get("data", "TalkingPal.txt"); // ip/data/TalkingPal.txt
-        try (BufferedReader br = Files.newBufferedReader(inputPath, StandardCharsets.UTF_8)) {
-            String line;
-            while ((line = br.readLine()) != null) {
-                // process each line
-                if (line.trim().isEmpty()) {
-                    continue;
-                }
-                output.add(Storage.parseTaskLine(line));
+        try {
+            Files.createDirectories(SAVE_PATH.getParent()); // ensure data/ exists
+
+            // first run returns empty list quietly
+            if (Files.notExists(SAVE_PATH)) {
+                Files.createFile(SAVE_PATH);
+                System.out.println("No existing save file found. Starting with an empty task list.");
+                return output;
             }
-        } catch (NoSuchFileException e) {
-            System.err.println("File not found: " + inputPath.toAbsolutePath());
-            isLoaded = false;
-        } catch (IOException e) {
-            System.err.println("Error reading file: " + e.getMessage());
-            isLoaded = false;
+
+            try (BufferedReader br = Files.newBufferedReader(SAVE_PATH, StandardCharsets.UTF_8)) {
+                String line;
+                while ((line = br.readLine()) != null) {
+                    if (line.trim().isEmpty()) {
+                        continue;
+                    }
+                    output.add(Storage.parseTaskLine(line));
+                }
+            }
+
+            System.out.println("Loaded data from: " + SAVE_PATH.toAbsolutePath());
+            return output;
+
         } catch (TalkingPalException e) {
             System.err.println("Parse error: " + e.getMessage());
+            return new TaskList(); // or return output, depending on your preference
+        } catch (IOException e) {
+            System.err.println("Error reading file: " + e.getMessage());
+            return new TaskList();
         }
-        if (isLoaded) {
-            System.out.println("Loaded data from TalkingPal.txt file!");
-        }
-        return output;
     }
+
     /**
      * Parses a single saved task line into a {@code Task}.
      *

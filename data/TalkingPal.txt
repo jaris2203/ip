@@ -2,3 +2,4 @@
 2. [T][ ] Clear Trash
 3. [D][ ] Finish CS Project (by: Dec 31 2026)
 4. [T][X] Feed Yier
+5. [T][ ] Gym

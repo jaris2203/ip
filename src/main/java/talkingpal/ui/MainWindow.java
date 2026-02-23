@@ -22,23 +22,24 @@ public class MainWindow extends AnchorPane {
     @FXML
     private Button sendButton;
 
-    private Image botImage = new Image(this.getClass().getResourceAsStream("/./images/YierWine.gif"));
-    private Image userImage = new Image(this.getClass().getResourceAsStream("/./images/Bubu.gif"));
-    private TalkingPal talkingPal = new TalkingPal();
+    private Image botImage = new Image(this.getClass().getResourceAsStream("/images/YierWine.gif"));
+    private Image userImage = new Image(this.getClass().getResourceAsStream("/images/Bubu.gif"));
+    private TalkingPal talkingPal;
 
     @FXML
     public void initialize() {
         scrollPane.vvalueProperty().bind(dialogContainer.heightProperty());
+    }
+
+    /** Injects the TalkingPal instance */
+    public void setTalkingPal(TalkingPal p) {
+        this.talkingPal = p;
+
         String startMessage = "Hello, I'm TalkingPal. What is your name?";
         dialogContainer.getChildren().addAll(
                 DialogBox.getBotDialog(talkingPal.getCurrentTasks(),botImage),
                 DialogBox.getBotDialog(startMessage, botImage)
         );
-    }
-
-    /** Injects the TalkingPal instance */
-    public void setTalkingPal(TalkingPal p) {
-        talkingPal = p;
     }
 
     /**
